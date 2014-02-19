@@ -1,12 +1,23 @@
 # General settings
-default[:sonar][:dir]       = "/opt/sonar"
+default[:sonar][:name] = 'sonar'
+default[:sonar][:install_path]       = "/opt/sonar"
 default[:sonar][:version]   = "3.7"
-default[:sonar][:checksum]  = "b00819d80c2e3ea436d546d3dab16987"
+
+default[:sonar][:checksum] =
+    case node[:sonar][:version]
+      when '3.7' then '6abcfa94ffa46a130a1193ed448917fd1bfbc12499ae505baf0b88e09df5b292'
+    end
+
 default[:sonar][:os_kernel] = "linux-x86-64"
 default[:sonar][:mirror]    = "http://dist.sonar.codehaus.org"
 default[:sonar][:plugins_repo]    = "http://repository.codehaus.org/org/codehaus/sonar-plugins"
 default[:sonar][:plugins_dir]    = "extensions/plugins"
 default[:sonar][:plugins]    = {}
+
+default[:sonar][:download_url] = "#{node[:sonar][:mirror]}/sonar-#{node[:sonar][:version]}.zip"
+default[:sonar][:user] = 'sonar'
+default[:sonar][:group] = 'sonar'
+default[:sonar][:home_path] = '/home/sonar'
 
 # Web settings
 # The default listen port is 9000, the default context path is / and Sonar listens by default to all network interfaces : '0.0.0.0'.
@@ -18,13 +29,13 @@ default[:sonar][:web_domain]             = "sonar.example.com"
 default[:sonar][:web_context]            = "/"
 default[:sonar][:web_template]           = "default"
 
-# Database settings
-# @see conf/sonar.properties for examples for different databases
-default[:sonar][:jdbc_username]          = "sonar"
-default[:sonar][:jdbc_password]          = "sonar"
-default[:sonar][:jdbc_url]               = "jdbc:derby://localhost:1527/sonar;create=true"
-default[:sonar][:jdbc_driverClassName]   = "org.apache.derby.jdbc.ClientDriver"
-default[:sonar][:jdbc_validationQuery]   = "values(1)"
+## Database settings
+default[:sonar][:database][:type] = 'mysql'
+default[:sonar][:database][:host] = 'localhost'
+default[:sonar][:database][:port] = 3306
+default[:sonar][:database][:name] = 'sonar'
+default[:sonar][:database][:user] = 'sonar'
+default[:sonar][:database][:password] = 'sonar'
 
 # Wrapper settings eg. for performance improvements
 # @see http://docs.codehaus.org/display/SONAR/Performances
@@ -37,3 +48,9 @@ default[:sonar][:logfile_maxsize]        = "0"
 default[:sonar][:syslog_loglevel]        = "NONE"
 
 default[:sonar][:options]                = {}
+
+# backup to s3
+default[:sonar][:backup][:enabled] = true
+default[:sonar][:backup][:s3_access_key_id] = "BN588NGSSFPKQHD1NX21"
+default[:sonar][:backup][:s3_secret_access_key] = "8abEbk+jZyx3c9Td2etAMO031bkXmqQEGjET8WcE"
+default[:sonar][:backup][:s3_bucket] = "backups"

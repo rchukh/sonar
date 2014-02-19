@@ -16,57 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-include_recipe "java"
-
-package "unzip"
-
-service "sonar" do
-  supports :status => true, :restart => true, :start => true, :stop => true
+include_recipe "sonar::install"
+include_recipe "sonar::database_mysql"
+if (node[:sonar][:backup][:enabled])
+  include_recipe 'sonar::backup'
 end
-
-remote_file "/opt/sonar-#{node[:sonar][:version]}.zip" do
-  source "#{node[:sonar][:mirror]}/sonar-#{node[:sonar][:version]}.zip"
-  mode "0644"
-  checksum node[:sonar][:checksum]
-  not_if { ::File.exists?("/opt/sonar-#{node[:sonar][:version]}.zip") }
-end
-
-execute "unzip /opt/sonar-#{node[:sonar][:version]}.zip -d /opt/" do
-  notifies :stop, :restart, "service[sonar]"
-  not_if { ::File.directory?("/opt/sonar-#{node[:sonar][:version]}/") }
-end
-
-link "/opt/sonar" do
-  to "/opt/sonar-#{node[:sonar][:version]}"
-end
-
-link "/etc/init.d/sonar" do
-  to "/opt/sonar/bin/#{node[:sonar][:os_kernel]}/sonar.sh"
-end
-
-service "sonar" do
-  action :enable
-end
-
-template "sonar.properties" do
-  path "/opt/sonar/conf/sonar.properties"
-  source "sonar.properties.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  variables(
-    :options => node[:sonar][:options]
-  )
-  notifies :restart, "service[sonar]"
-end
-
-template "wrapper.conf" do
-  path "/opt/sonar/conf/wrapper.conf"
-  source "wrapper.conf.erb"
-  owner "root"
-  group "root"
-  mode 0644
-  notifies :restart, "service[sonar]"
-end
-

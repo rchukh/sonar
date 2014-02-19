@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
     os.keypair_name = "eindbaas-key"      # as stored in Nova
     os.name         = "sonar-dev"
     os.server_name  = "sonar-dev"
-    os.floating_ip  = "172.21.42.159"      # optional (The floating IP to assign for this instance)
+    os.floating_ip  = "172.21.42.158"      # optional (The floating IP to assign for this instance)
   end
 
   config.vm.provision :chef_solo do |chef|
@@ -63,11 +63,7 @@ Vagrant.configure("2") do |config|
     }
 
     chef.run_list = %w{
-      recipe[apt]
-      recipe[java]
-      recipe[sonar]
-      recipe[sonar::plugins]
-      recipe[sonar::database_mysql]
+      recipe[sonar]@0.0.5
     }
   end
 
