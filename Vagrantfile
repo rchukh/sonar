@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :openstack do |os|
     os.username     = "vagrant"          # e.g. "#{ENV['OS_USERNAME']}"
     os.api_key      = "vagrant"           # e.g. "#{ENV['OS_PASSWORD']}"
-    os.flavor       = /mx.small/                # Regex or String
+    os.flavor       = /mx.medium/                # Regex or String
     os.image        = /Ubuntu Server 13.04/                 # Regex or String
     os.endpoint     = "http://172.21.42.2:5000/v2.0/tokens"      # e.g. "#{ENV['OS_AUTH_URL']}/tokens"
     os.keypair_name = "eindbaas-key"      # as stored in Nova
@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
     }
 
     chef.run_list = %w{
-      recipe[sonar]@0.0.5
+      recipe[sonar]
     }
   end
 

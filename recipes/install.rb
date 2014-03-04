@@ -42,6 +42,7 @@ ark node[:sonar][:name] do
   version node[:sonar][:version]
   owner node[:sonar][:user]
   group node[:sonar][:group]
+  notifies :restart, 'service[sonar]', :delayed
 end
 
 link "/etc/init.d/sonar" do
@@ -55,8 +56,8 @@ end
 template "sonar.properties" do
   path "/opt/sonar/conf/sonar.properties"
   source "sonar.properties.erb"
-  owner "root"
-  group "root"
+  owner node[:sonar][:user]
+  group node[:sonar][:group]
   mode 0644
   variables(
       :options => node[:sonar][:options]
@@ -67,8 +68,8 @@ end
 template "wrapper.conf" do
   path "/opt/sonar/conf/wrapper.conf"
   source "wrapper.conf.erb"
-  owner "root"
-  group "root"
+  owner node[:sonar][:user]
+  group node[:sonar][:group]
   mode 0644
   notifies :restart, 'service[sonar]', :delayed
 end

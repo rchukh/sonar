@@ -18,6 +18,7 @@
 #
 include_recipe "sonar::install"
 include_recipe "sonar::database_mysql"
+include_recipe "sonar::plugins"
 if (node[:sonar][:backup][:enabled])
   include_recipe 'sonar::backup'
 end

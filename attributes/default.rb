@@ -1,11 +1,12 @@
 # General settings
 default[:sonar][:name] = 'sonar'
 default[:sonar][:install_path]       = "/opt/sonar"
-default[:sonar][:version]   = "3.7"
+default[:sonar][:version]   = "4.1.2"
 
 default[:sonar][:checksum] =
     case node[:sonar][:version]
       when '3.7' then '6abcfa94ffa46a130a1193ed448917fd1bfbc12499ae505baf0b88e09df5b292'
+      when '4.1.2' then '3789f35c18ccb5c4d141140bed31e6b54a68c986c98ee3e7ad0fc56374e96d0c'
     end
 
 default[:sonar][:os_kernel] = "linux-x86-64"
@@ -14,7 +15,8 @@ default[:sonar][:plugins_repo]    = "http://repository.codehaus.org/org/codehaus
 default[:sonar][:plugins_dir]    = "extensions/plugins"
 default[:sonar][:plugins]    = {}
 
-default[:sonar][:download_url] = "#{node[:sonar][:mirror]}/sonar-#{node[:sonar][:version]}.zip"
+# when version is higher than 3.7 the value /sonar should be renamed to /sonarqube
+default[:sonar][:download_url] = "#{node[:sonar][:mirror]}/sonarqube-#{node[:sonar][:version]}.zip"
 default[:sonar][:user] = 'sonar'
 default[:sonar][:group] = 'sonar'
 default[:sonar][:home_path] = '/home/sonar'
@@ -47,7 +49,13 @@ default[:sonar][:java_command]           = "java"
 default[:sonar][:logfile_maxsize]        = "0"
 default[:sonar][:syslog_loglevel]        = "NONE"
 
-default[:sonar][:options]                = {}
+default[:sonar][:options]                = {
+   #'crowd.password:'                           => 'sonar',
+   #'crowd.url:'                                => 'https://www9.klm.com/corporate/pse/crowd/services/',
+   #'sonar.authenticator.class:'                => 'org.sonar.plugins.crowd.CrowdAuthenticator',
+   #'sonar.authenticator.createUsers:'          => true,
+   #'sonar.authenticator.ignoreStartupFailure:' => true
+   }
 
 # backup to s3
 default[:sonar][:backup][:enabled] = true
