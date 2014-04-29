@@ -1,7 +1,7 @@
 # General settings
 default[:sonar][:name] = 'sonar'
 default[:sonar][:install_path]       = "/opt/sonar"
-default[:sonar][:version]   = "4.1.2"
+default[:sonar][:version]   = '4.1.2'
 
 default[:sonar][:checksum] =
     case node[:sonar][:version]
