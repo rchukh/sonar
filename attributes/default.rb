@@ -1,12 +1,14 @@
 # General settings
 default[:sonar][:name] = 'sonar'
 default[:sonar][:install_path]       = "/opt/sonar"
-default[:sonar][:version]   = '4.1.2'
+default[:sonar][:version]   = '4.2'
+default[:sonar][:previous_version]   = '4.1.2'
 
 default[:sonar][:checksum] =
     case node[:sonar][:version]
       when '3.7' then '6abcfa94ffa46a130a1193ed448917fd1bfbc12499ae505baf0b88e09df5b292'
       when '4.1.2' then '3789f35c18ccb5c4d141140bed31e6b54a68c986c98ee3e7ad0fc56374e96d0c'
+      when '4.2' then 'a51c97c32705e164a8ad3b573bd8ee68e2fd1c3a0ed37ba9d405f7437dab77ee'
     end
 
 default[:sonar][:os_kernel] = "linux-x86-64"

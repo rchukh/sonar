@@ -6,18 +6,19 @@ sonar_plugin "sonar-taglist-plugin"
 sonar_plugin "sonar-crowd-plugin"
 sonar_plugin "sonar-googleanalytics-plugin"
 
-#intergrated in sonarqube 4.x
+## intergrated in sonarqube 4.x
 #sonar_plugin "sonar-technicaldebt-plugin" do
 #  version "1.2.1"
 #end
 
-sonar_plugin "sonar-java-plugin" do
-  version "2.0"
-  repo_url "http://repository.codehaus.org/org/codehaus/sonar-plugins/java/"
-end
+## intergrated since 4.2
+ sonar_plugin "sonar-java-plugin" do
+   version "2.0"
+   repo_url "http://repository.codehaus.org/org/codehaus/sonar-plugins/java/"
+ end
 
 sonar_plugin "sonar-javascript-plugin" do
-  version "1.5"
+  version "1.6"
   repo_url "http://repository.codehaus.org/org/codehaus/sonar-plugins/javascript/"
 end
 
@@ -36,7 +37,7 @@ end
 #end
 
 sonar_plugin "sonar-motion-chart-plugin" do
-  version "1.5"
+  version "1.6"
 end
 
 sonar_plugin "sonar-android-plugin" do
@@ -48,3 +49,10 @@ sonar_plugin "sonar-jbehave-plugin" do
   version "1.0.2"
   repo_url "http://mvnproxy.eden.klm.com/content/repositories/kl-releases/com/klm/eden/jbehave/"
 end
+
+
+# TODO: copy plugins from pervious installed version
+# set a pervious version atribute
+# copy plugins from extension dir
+# /opt/sonar-PREVIOUSVERSION/extensions/plugins
+# if this is succesfull then we do not need the this plugin download lib

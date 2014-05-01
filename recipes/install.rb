@@ -54,7 +54,7 @@ service "sonar" do
 end
 
 template "sonar.properties" do
-  path "/opt/sonar/conf/sonar.properties"
+  path "#{node[:sonar][:install_path]}/conf/sonar.properties"
   source "sonar.properties.erb"
   owner node[:sonar][:user]
   group node[:sonar][:group]
@@ -66,7 +66,7 @@ template "sonar.properties" do
 end
 
 template "wrapper.conf" do
-  path "/opt/sonar/conf/wrapper.conf"
+  path "#{node[:sonar][:install_path]}/conf/wrapper.conf"
   source "wrapper.conf.erb"
   owner node[:sonar][:user]
   group node[:sonar][:group]
@@ -74,3 +74,13 @@ template "wrapper.conf" do
   notifies :restart, 'service[sonar]', :delayed
 end
 
+# TODO: sonar needs to be restarted after this action
+# TODO: need to set unless or if statement so that if pervious version is null nothing will happen
+# unless node[:sonar][:previous_version] != ''
+  execute "copy_plugins_from_previous_version" do
+    command "cp #{node[:ark][:prefix_home]}/#{node[:sonar][:name]}-#{node[:sonar][:previous_version]}/#{node[:sonar][:plugins_dir]}/* #{node[:sonar][:install_path]}/#{node[:sonar][:plugins_dir]}"
+    action :nothing
+    subscribes :run, "ark[#{node[:sonar][:name]}]", :delayed
+    notifies :restart, 'service[sonar]', :immediately
+  end
+end
